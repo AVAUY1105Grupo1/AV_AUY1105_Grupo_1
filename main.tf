@@ -20,7 +20,7 @@ provider "aws" {
 }
 
 ############################
-# LLAVES SSH
+# Seccion 1 - LLAVES SSH
 ############################
 
 # Genera una llave privada de forma dinámica
