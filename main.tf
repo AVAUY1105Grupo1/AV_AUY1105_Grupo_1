@@ -1,4 +1,7 @@
 terraform {
+  # Definición de versión para satisfacer a TFLint y asegurar compatibilidad
+  required_version = "~> 1.14.0"
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -20,6 +23,7 @@ provider "aws" {
 }
 
 ############################
+# LLAVES SSH
 # Bloque 1 - LLAVES SSH
 ############################
 
@@ -29,13 +33,13 @@ resource "tls_private_key" "rsa_key" {
   rsa_bits  = 4096
 }
 
-# Registra la llave pública en AWS con tu nomenclatura
+# Registra la llave pública en AWS con la nomenclatura oficial
 resource "aws_key_pair" "deployer_key" {
   key_name   = "AUY1105-duocapp-key"
   public_key = tls_private_key.rsa_key.public_key_openssh
 }
 
-# Guarda la llave privada en tu máquina local para el provisioner y uso manual
+# Guarda la llave privada localmente para el provisioner
 resource "local_file" "private_key" {
   content         = tls_private_key.rsa_key.private_key_pem
   filename        = "AUY1105-duocapp-key.pem"
@@ -110,7 +114,7 @@ resource "aws_route_table_association" "a" {
 # Bloque 3 - SECURITY GROUPS
 ############################
 
-# Solo permite SSH (Puerto 22) según instrucción 3
+# Solo permite SSH (Puerto 22) según requerimiento de seguridad
 resource "aws_security_group" "web" {
   name   = "AUY1105-duocapp-sg"
   vpc_id = aws_vpc.main.id
@@ -141,7 +145,7 @@ resource "aws_security_group" "web" {
 
 # EC2: Ubuntu 24.04 LTS tipo t2.micro
 resource "aws_instance" "app" {
-  ami                    = "ami-04b70fa74e45c3917" # Ubuntu 24.04 LTS Noble en us-east-1
+  ami                    = "ami-04b70fa74e45c3917" 
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.public_a.id
   vpc_security_group_ids = [aws_security_group.web.id]
@@ -151,7 +155,7 @@ resource "aws_instance" "app" {
     Name = "AUY1105-duocapp-ec2"
   }
 
-  # Provisionamiento (Uso de llave dinámica)
+  # Provisionamiento de servidor básico
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update -y",
