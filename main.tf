@@ -170,6 +170,7 @@ resource "aws_instance" "app" {
 
 ############################
 # Bloque 5 - OUTPUTS
+# Nota: Analizar que otras salidas se pueden agregar.
 ############################
 
 output "instance_public_ip" {
