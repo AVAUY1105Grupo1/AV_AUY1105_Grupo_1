@@ -20,7 +20,7 @@ provider "aws" {
 }
 
 ############################
-# Seccion 1 - LLAVES SSH
+# Bloque 1 - LLAVES SSH
 ############################
 
 # Genera una llave privada de forma dinámica
@@ -43,7 +43,7 @@ resource "local_file" "private_key" {
 }
 
 ############################
-# NETWORKING
+# Bloque 2 - NETWORKING
 ############################
 
 # VPC: Bloque CIDR 10.1.0.0/16
@@ -107,7 +107,7 @@ resource "aws_route_table_association" "a" {
 }
 
 ############################
-# SECURITY GROUPS
+# Bloque 3 - SECURITY GROUPS
 ############################
 
 # Solo permite SSH (Puerto 22) según instrucción 3
@@ -136,7 +136,7 @@ resource "aws_security_group" "web" {
 }
 
 ############################
-# CÓMPUTO
+# Bloque 4 - CÓMPUTO
 ############################
 
 # EC2: Ubuntu 24.04 LTS tipo t2.micro
@@ -169,7 +169,7 @@ resource "aws_instance" "app" {
 }
 
 ############################
-# OUTPUTS
+# Bloque 5 - OUTPUTS
 ############################
 
 output "instance_public_ip" {
