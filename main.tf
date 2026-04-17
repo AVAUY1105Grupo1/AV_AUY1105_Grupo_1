@@ -1,5 +1,5 @@
 terraform {
-  # Definición de versión para satisfacer a TFLint y asegurar compatibilidad
+  # Definición de versión para satisfacer a TFLint y asegurar compatibilidad.
   required_version = "~> 1.14.0"
 
   required_providers {
