@@ -5,6 +5,19 @@
 **Institución:** Duoc UC  
 **Semestre:** 1 - 2026
 
+### Requisitos Previos
+Asegúrate de tener instaladas las siguientes herramientas:
+* **Terraform** (v1.5.0 o superior)
+* **TFLint** (para análisis estático)
+* **Open Policy Agent (OPA)** (para evaluación de políticas)
+* **AWS CLI** configurado con credenciales válidas.
+
+### Clonar el Repositorio
+Clona el proyecto y entra en la carpeta raíz:
+```bash
+git clone [https://github.com/AVAUY1105Grupo1/AV_AUY1105_Grupo_1.git](https://github.com/AVAUY1105Grupo1/AV_AUY1105_Grupo_1.git)
+cd AV_AUY1105_Grupo_1
+```
 ## 1. Descripción del Proyecto
 Este repositorio gestiona la infraestructura en la nube para el proyecto **duocapp**. Utiliza Terraform para desplegar un entorno web seguro en AWS (us-east-1), integrando herramientas de auditoría y políticas para garantizar un despliegue de alto rendimiento y bajo costo.
 
@@ -21,8 +34,15 @@ Para cumplir con la rúbrica de la evaluación, se han implementado las siguient
 ### 3.1. TFLint
 Se realiza un análisis estático para asegurar que el código cumpla con las mejores prácticas de AWS.
 - **Configuración:** `.tflint.hcl` con el plugin de AWS habilitado.
-- **Uso:** `tflint --init` seguido de `tflint`.
 
+Ejecute en su terminal:
+```
+tflint --init
+```
+Seguido de:
+```
+tflint
+```
 ### 3.2. Open Policy Agent (OPA)
 Se aplica **Políticas como Código** para validar el cumplimiento de las restricciones de presupuesto.
 - **Política:** `policy/check.rego`.
@@ -32,14 +52,50 @@ Se aplica **Políticas como Código** para validar el cumplimiento de las restri
 Generación automática de documentación técnica para mantener el `README.md` siempre actualizado con el estado real del código.
 
 ## 4. Guía de Ejecución Local
-Siga estos pasos para validar sus cambios antes de enviarlos a la rama principal:
 
-1. **Sincronizar proveedores:** `terraform init`
-2. **Validar Políticas (OPA):** `terraform plan -out=tfplan.binary`  
-   `terraform show -json tfplan.binary > tfplan.json`  
-   `opa eval -i tfplan.json -d policy/check.rego "data.terraform.analysis.allow"`
-3. **Generar Documentación:** `terraform-docs .`
+### Configuración de Credenciales (CRÍTICO)
 
+Antes de ejecutar cualquier comando de Terraform u OPA, debes autenticarte en AWS. Si utilizas **AWS Academy**, recuerda que las credenciales son **temporales** y caducan cada pocas horas.
+
+### Paso a paso para la autenticación:
+1. **En tu laboratorio de AWS Academy, haz clic en el botón *"AWS Details"*.**
+2. **Haz clic en **"CLI Credentials"** y copia el bloque de texto que contiene los `export`.**
+3. **Configura tus credenciales con:**
+```
+aws configure
+```
+4. Péga tus crendenciales directamente en tu terminal de Linux:
+```
+export AWS_ACCESS_KEY_ID="ASIA..."
+export AWS_SECRET_ACCESS_KEY="..."
+export AWS_SESSION_TOKEN="..."
+```
+5. Verificación de Conexión. Para asegurarte de que tus llaves están activas, ejecuta:
+```
+aws sts get-caller-identity
+```
+### Una vez hecho lo anterior, siga estos pasos para validar sus cambios antes de enviarlos a la rama principal:
+
+1. **Sincronizar proveedores:**
+```
+terraform init
+```
+2. **Validar Políticas (OPA):**
+```
+terraform plan -out=tfplan.binary
+```
+Seguido de:
+```
+terraform show -json tfplan.binary > tfplan.json
+```
+   Luego:
+```
+opa eval -i tfplan.json -d policy/check.rego "data.terraform.analysis.allow"
+```
+3. **Generar Documentación:**
+```
+terraform-docs
+```
 ---
 
 ## 5. Documentación de Recursos (Auto-generada)
