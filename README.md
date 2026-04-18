@@ -1,8 +1,53 @@
-# AV_AUY1105_Grupo_1
-Evaluacion Parcial N°1 // INFRAESTRUCTURA COMO CODIGO II_001V // Semestre 1 - 2026
+# AV_AUY1105_Grupo_1 - Evaluación Parcial N°1
 
+**Estudiante:** Bryan Painemilla  
+**Curso:** Infraestructura como Código II 001V
+**Institución:** Duoc UC  
+**Semestre:** 1 - 2026
 
-## Documentación de Infraestructura
+## 1. Descripción del Proyecto
+Este repositorio gestiona la infraestructura en la nube para el proyecto **duocapp**. Utiliza Terraform para desplegar un entorno web seguro en AWS (us-east-1), integrando herramientas de auditoría y políticas para garantizar un despliegue de alto rendimiento y bajo costo.
+
+## 2. Arquitectura de Infraestructura (AWS)
+La infraestructura desplegada incluye los siguientes componentes core:
+- **Redes:** VPC con bloque CIDR 10.1.0.0/16, subredes públicas en múltiples zonas de disponibilidad y Gateway de Internet.
+- **Seguridad:** Security Group configurado exclusivamente para acceso administrativo vía SSH (puerto 22).
+- **Cómputo:** Instancia EC2 Ubuntu 24.04 LTS (t2.micro).
+- **Gestión de Identidad:** Generación dinámica de llaves SSH (RSA 4096) integradas en el flujo de Terraform.
+
+## 3. Calidad y Gobernanza (Quality Gate)
+Para cumplir con la rúbrica de la evaluación, se han implementado las siguientes herramientas de análisis:
+
+### 3.1. TFLint
+Se realiza un análisis estático para asegurar que el código cumpla con las mejores prácticas de AWS.
+- **Configuración:** `.tflint.hcl` con el plugin de AWS habilitado.
+- **Uso:** `tflint --init` seguido de `tflint`.
+
+### 3.2. Open Policy Agent (OPA)
+Se aplica **Políticas como Código** para validar el cumplimiento de las restricciones de presupuesto.
+- **Política:** `policy/check.rego`.
+- **Regla:** Solo se permite el despliegue de instancias tipo `t2.micro`. Cualquier otro tipo de instancia será rechazado en la fase de auditoría.
+
+### 3.3. terraform-docs
+Generación automática de documentación técnica para mantener el `README.md` siempre actualizado con el estado real del código.
+
+## 4. Guía de Ejecución Local
+Siga estos pasos para validar sus cambios antes de enviarlos a la rama principal:
+
+1. **Sincronizar proveedores:** `terraform init`
+2. **Validar Políticas (OPA):** `terraform plan -out=tfplan.binary`  
+   `terraform show -json tfplan.binary > tfplan.json`  
+   `opa eval -i tfplan.json -d policy/check.rego "data.terraform.analysis.allow"`
+3. **Generar Documentación:** `terraform-docs .`
+
+---
+
+## 5. Documentación de Recursos (Auto-generada)
+*(Esta sección se actualiza automáticamente al ejecutar terraform-docs)*
+
+### Ejemplo de la documentación con terraform-docs:
+
+# Documentación de Infraestructura
 
 
 <!-- BEGIN_TF_DOCS -->
