@@ -1,0 +1,26 @@
+# --- TERRAFORM ---
+# Ignorar la carpeta de plugins y módulos
+.terraform/
+
+# Ignorar archivos de estado (contienen datos sensibles en texto plano)
+*.tfstate
+*.tfstate.*
+
+# Ignorar variables locales o secretos
+*.tfvars
+*.tfvars.json
+
+# --- ARCHIVOS TEMPORALES DE PLAN ---
+# Estos son los que generamos para OPA
+tfplan
+tfplan.binary
+tfplan.json
+
+# --- SEGURIDAD Y LLAVES ---
+# Ignorar llaves privadas generadas (¡CRÍTICO!)
+*.pem
+AUY1105-duocapp-key.pem
+
+# --- HERRAMIENTAS DE CALIDAD (TFLint / OPA) ---
+# Ignorar plugins descargados de TFLint
+.tflint/

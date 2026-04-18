@@ -1,5 +1,4 @@
 config {
-  # Cambia 'module = true' por esto:
   call_module_type = "all" 
   force            = false
 }

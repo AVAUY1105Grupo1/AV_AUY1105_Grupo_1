@@ -1,0 +1,10 @@
+formatter: "markdown table"
+header-from: main.tf
+sections:
+  show:
+    - providers
+    - resources
+    - outputs
+output:
+  file: "README.md"
+  mode: inject
